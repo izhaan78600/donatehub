@@ -1,0 +1,193 @@
+{
+  "info": {
+    "name": "DONATEHUB API Collection",
+    "description": "Postman API Collection for DONATEHUB — Old Clothes & Book Donation Drive Tracker (College Project Leap Java + DBMS).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Alex Morgan\",\n  \"email\": \"alex.morgan@example.com\",\n  \"phone\": \"+1-555-0199\",\n  \"password\": \"User@123\",\n  \"confirmPassword\": \"User@123\",\n  \"address\": \"500 Fifth Avenue, Suite 12, New York\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sarah.jenkins@example.com\",\n  \"password\": \"User@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@donatehub.com\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Donation Drives",
+      "item": [
+        {
+          "name": "Get Active Drives (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/drives", "host": ["{{baseUrl}}"], "path": ["api", "drives"] }
+          }
+        },
+        {
+          "name": "Create Drive (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monsoon Warmth Relief Drive\",\n  \"description\": \"Collecting raincoats, dry jackets and children storybooks.\",\n  \"startDate\": \"2026-10-01\",\n  \"endDate\": \"2026-11-15\",\n  \"location\": \"City Hall North Pavilion\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/drives", "host": ["{{baseUrl}}"], "path": ["api", "admin", "drives"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Donations",
+      "item": [
+        {
+          "name": "Create Donation (User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driveId\": 1,\n  \"categoryId\": 1,\n  \"itemName\": \"Fleece Lined Winter Jackets\",\n  \"description\": \"Clean jackets in medium and large sizes\",\n  \"quantity\": 10,\n  \"condition\": \"GOOD\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/user/donations", "host": ["{{baseUrl}}"], "path": ["api", "user", "donations"] }
+          }
+        },
+        {
+          "name": "Get User Donations (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/user/donations", "host": ["{{baseUrl}}"], "path": ["api", "user", "donations"] }
+          }
+        },
+        {
+          "name": "Get User Dashboard (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/user/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "user", "dashboard"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Recipients & Distributions",
+      "item": [
+        {
+          "name": "Create Recipient (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationName\": \"Mercy Care Youth Shelter\",\n  \"contactPerson\": \"David Ross\",\n  \"email\": \"contact@mercycare.org\",\n  \"phone\": \"+1-555-0391\",\n  \"address\": \"77 Riverbank Street, Shelter Ward 2\",\n  \"organizationType\": \"SHELTER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/recipients", "host": ["{{baseUrl}}"], "path": ["api", "admin", "recipients"] }
+          }
+        },
+        {
+          "name": "Record Distribution (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itemId\": 1,\n  \"recipientId\": 2,\n  \"quantity\": 5,\n  \"distributionDate\": \"2026-09-28\",\n  \"notes\": \"Delivered directly to night shelter\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/distributions", "host": ["{{baseUrl}}"], "path": ["api", "admin", "distributions"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Dashboards & Reports",
+      "item": [
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "admin", "dashboard"] }
+          }
+        },
+        {
+          "name": "Admin Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/admin/reports", "host": ["{{baseUrl}}"], "path": ["api", "admin", "reports"] }
+          }
+        },
+        {
+          "name": "Admin Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/admin/audit-logs", "host": ["{{baseUrl}}"], "path": ["api", "admin", "audit-logs"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "adminToken", "value": "" },
+    { "key": "userToken", "value": "" }
+  ]
+}
